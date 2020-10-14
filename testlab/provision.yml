@@ -1,0 +1,40 @@
+---
+
+- name: Tekla plugin dev box provision
+  hosts: all
+
+  tasks:
+    - name: Print host information
+      debug:
+        msg: "{{ ansible_fqdn }}: {{ ansible_distribution }} {{ ansible_distribution_version}}"
+
+    - name: Install Google Chrome browser
+      win_chocolatey:
+        name: googlechrome
+        state: present
+        ignore_checksums: yes
+
+    - name: Install Mozilla Firefox browser
+      win_chocolatey:
+        name: firefox
+        state: present
+
+    - name: Add 'uBlock Origin' extension to Google Chrome
+      win_regedit:
+        path: HKLM:\SOFTWARE\WOW6432Node\Google\Chrome\Extensions\cjpalhdlnbpafiamejdnhcphjbkeiagm
+        name: update_url
+        data: https://clients2.google.com/service/update2/crx
+
+    - name: Install Microsoft Visual C++ redistributables
+      win_chocolatey:
+        name:
+        - vcredist2010
+        - vcredist2013
+        - vcredist140
+        state: present
+
+    - name: Install Tekla Structures
+      win_package:
+        path: "C:\\tekla_distr\\tekla2020rus\\Tekla Structures 2020\\Tekla Structures 2020.msi"
+        state: present
+        arguments: /passive /norestart
