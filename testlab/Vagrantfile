@@ -1,11 +1,20 @@
 ansible_version = `ansible --version`
 
+tekla_distr = "/mnt/data/temp/tekla/"
+if File.file?("local-config.yml")
+  local_config = YAML.load_file("local-config.yml")
+  unless local_config.nil?
+    tekla_distr = local_config.fetch("tekla_distr", tekla_distr)
+  end
+end
+
+
 Vagrant.configure("2") do |config|
   config.vm.box = "cheretbe/win10ltsc2019_ru_64"
   config.winrm.username = "vagrant"
   config.winrm.password = "#{ENV['AO_DEFAULT_VAGRANT_PASSWORD']}"
   config.vm.boot_timeout = 900
-  config.vm.synced_folder "/mnt/data/temp/tekla/", "/tekla_distr"
+  config.vm.synced_folder tekla_distr, "/tekla_distr"
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "8192"

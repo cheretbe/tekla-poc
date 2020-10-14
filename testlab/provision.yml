@@ -38,3 +38,10 @@
         path: "C:\\tekla_distr\\tekla2020rus\\Tekla Structures 2020\\Tekla Structures 2020.msi"
         state: present
         arguments: /passive /norestart
+
+    - name: Install Visual Studio 2019 Community
+      win_chocolatey:
+        name:
+          - visualstudio2019community
+          - visualstudio2019-workload-manageddesktop
+        state: present
