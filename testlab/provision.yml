@@ -39,6 +39,16 @@
         state: present
         arguments: /passive /norestart
 
+    - name: Install dotnetcore-sdk
+      win_chocolatey:
+        name: dotnetcore-sdk
+        state: present
+
+    - name: Install netfx-4.5.2-devpack
+      win_chocolatey:
+        name: netfx-4.5.2-devpack
+        state: present
+
     - name: Install Visual Studio 2019 Community
       win_chocolatey:
         name:
