@@ -38,20 +38,24 @@
         path: "C:\\tekla_distr\\tekla2020rus\\Tekla Structures 2020\\Tekla Structures 2020.msi"
         state: present
         arguments: /passive /norestart
-
-    - name: Install dotnetcore-sdk
-      win_chocolatey:
-        name: dotnetcore-sdk
-        state: present
-
-    - name: Install netfx-4.5.2-devpack
-      win_chocolatey:
-        name: netfx-4.5.2-devpack
-        state: present
+      register: tekla_installation
 
     - name: Install Visual Studio 2019 Community
       win_chocolatey:
         name:
           - visualstudio2019community
+        state: present
+        # '--locale' changes the display language of the user interface for the installer itself
+        # '--addProductLang' determines the UI language packs that are installed to the product
+        package_params: --locale en-US --addProductLang en-US --addProductLang ru-RU --passive
+      register: vs_installation
+
+    - name: Reboot the VM
+      win_reboot:
+      when: tekla_installation.changed or vs_installation.changed
+
+    - name: Install .NET Desktop Development workload for VS 2019
+      win_chocolatey:
+        name:
           - visualstudio2019-workload-manageddesktop
         state: present
