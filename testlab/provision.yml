@@ -33,6 +33,11 @@
         - vcredist140
         state: present
 
+    - name: Install Git
+      win_chocolatey:
+        name: git
+        state: present
+
     - name: Install Tekla Structures
       win_package:
         path: "C:\\tekla_distr\\tekla2020rus\\Tekla Structures 2020\\Tekla Structures 2020.msi"
@@ -49,6 +54,12 @@
         # '--addProductLang' determines the UI language packs that are installed to the product
         package_params: --locale en-US --addProductLang en-US --addProductLang ru-RU --passive
       register: vs_installation
+
+    - name: Add VS 2019 shortcut to the desktop
+      win_copy:
+        src: "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio 2019.lnk"
+        dest: "C:\\Users\\Public\\Desktop\\Visual Studio 2019.lnk"
+        remote_src: yes
 
     - name: Reboot the VM
       win_reboot:
