@@ -33,17 +33,35 @@
         - vcredist140
         state: present
 
-    - name: Install Git
-      win_chocolatey:
-        name: git
-        state: present
-
     - name: Install Tekla Structures
       win_package:
         path: "C:\\tekla_distr\\tekla2020rus\\Tekla Structures 2020\\Tekla Structures 2020.msi"
         state: present
         arguments: /passive /norestart
       register: tekla_installation
+
+    - name: Install Git
+      win_chocolatey:
+        name:
+        - git
+        state: present
+
+    - name: Total Commander
+      win_chocolatey:
+        name:
+        - totalcommander
+        state: present
+        package_params: /DesktopIcon
+
+    - name: Make sure Total Commander settings directory exists
+      win_file:
+        path: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER"
+        state: directory
+
+    - name: Copy Total Commander settings file
+      win_copy:
+        src: templates/wincmd.ini
+        dest: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER\\wincmd.ini"
 
     - name: Install Visual Studio 2019 Community
       win_chocolatey:
