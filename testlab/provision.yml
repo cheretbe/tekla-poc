@@ -40,6 +40,17 @@
         arguments: /passive /norestart
       register: tekla_installation
 
+    - name: Set Tekla Structures interface language to Russian
+      win_regedit:
+        path: "HKCU:\\Software\\Trimble\\Tekla Structures\\2020.0\\Settings"
+        name: Culture
+        data: ru-RU
+
+    - name: Copy custom Tekla Structures settings file
+      win_copy:
+        src: templates/tekla_custom_settings.ini
+        dest: "C:\\Users\\vagrant\\Documents\\tekla_custom_settings.ini"
+
     - name: Install Git
       win_chocolatey:
         name:
