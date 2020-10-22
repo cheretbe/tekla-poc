@@ -57,6 +57,24 @@
         - git
         state: present
 
+    - name: Make sure Total Commander settings directory exists
+      win_file:
+        path: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER"
+        state: directory
+
+    - name: Check if Total Commander settings file exists
+      win_stat:
+        path: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER\\wincmd.ini"
+      register: win_cmd_ini
+
+    # Note: we do this BEFORE TC installation on purpose, since the installer
+    # creates default version of the config file
+    - name: Copy Total Commander settings file
+      win_copy:
+        src: templates/wincmd.ini
+        dest: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER\\wincmd.ini"
+      when: not win_cmd_ini.stat.exists
+
     - name: Total Commander
       win_chocolatey:
         name:
@@ -68,22 +86,6 @@
       win_file:
         path: "c:\\Users\\Public\\Desktop\\Total Commander.lnk"
         state: absent
-
-    - name: Make sure Total Commander settings directory exists
-      win_file:
-        path: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER"
-        state: directory
-
-    - name: Check if Total Commander settings file exists
-      win_stat:
-        path: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER\\wincmd.ini"
-      register: win_cmd_ini
-
-    - name: Copy Total Commander settings file
-      win_copy:
-        src: templates/wincmd.ini
-        dest: "C:\\Users\\vagrant\\AppData\\Roaming\\GHISLER\\wincmd.ini"
-      when: not win_cmd_ini.stat.exists
 
     - name: Install Visual Studio 2019 Community
       win_chocolatey:
