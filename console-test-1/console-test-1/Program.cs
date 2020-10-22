@@ -6,21 +6,89 @@ using System.Threading;
 using System.Diagnostics;
 using CommandLine;
 using System.ComponentModel;
+using Tekla.Structures.Model;
 
 namespace console_test_1
 {
     class Program
     {
+        private static Process teklaProc = null;
+        private static Model teklaModel = null;
+        private static ModelHandler teklaModelHandler = null;
+
         public class Options
         {
             [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
             public bool Verbose { get; set; }
         }
 
-        void StartTekla()
+        static void StartTekla()
         {
+            Process[] localAll = Process.GetProcesses();
+            if (Process.GetProcessesByName("TeklaStructures").Length == 0)
+            {
+                Console.WriteLine("Starting Tekla Structures");
+                //teklaProc = Process.Start(
+                //    "C:\\Program Files\\Tekla Structures\\2020.0\\nt\\bin\\TeklaStructures.exe",
+                //    "-I c:\\Users\\vagrant\\Documents\\tekla_custom_settings.ini c:\\TeklaStructuresModels\\empty_model"
+                //);
+            }
 
+            Console.WriteLine("Waiting for Tekla Structures API to become available");
+            teklaModel = new Model();
+            bool connected = false;
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            while (!connected)
+            {
+                try
+                {
+                    //bool wtf = teklaModel.GetConnectionStatus();
+                    //teklaModel.GetInfo();
+                    connected = teklaModel.GetConnectionStatus();
+                }
+                catch
+                {
+                    Console.WriteLine("dummy");
+//                    teklaModel = null;
+                }
+                if (sw.ElapsedMilliseconds > 120000) throw new TimeoutException();
+                System.Threading.Thread.Sleep(2000);
+            }
+
+            teklaModelHandler = new ModelHandler();
         }
+
+        static void OpenModel()
+        {
+            ModelInfo modelInfo = teklaModel.GetInfo();
+            Console.WriteLine($"Current model: {modelInfo.ModelName} ({modelInfo.ModelPath})");
+
+            if (!String.Equals(modelInfo.ModelPath, "c:\\TeklaStructuresModels\\empty_model", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Closing current model");
+                teklaModelHandler.Close();
+                Console.WriteLine("Opening 'empty_model' model");
+                teklaModelHandler.Open("c:\\TeklaStructuresModels\\empty_model");
+            }
+        }
+
+        static void CloseTekla()
+        {
+            if (teklaProc != null)
+            {
+                teklaProc.Refresh();
+                if (!teklaProc.HasExited)
+                {
+                    Console.WriteLine("Stopping Tekla Structures");
+                    // Close process by sending a close message to its main window.
+                    teklaProc.CloseMainWindow();
+                    // Free resources associated with process.
+                    teklaProc.Close();
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             Options options = null;
@@ -33,15 +101,10 @@ namespace console_test_1
             if (!parseRes)
                 return;
 
-            //foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(options))
-            //{
-            //    string name = descriptor.Name;
-            //    object value = descriptor.GetValue(options);
-            //    Console.WriteLine("{0}={1}", name, value);
-            //}
-            //Console.WriteLine($"Verbose: {options.Verbose}");
-            //return;
-            Console.WriteLine("Starting");
+            StartTekla();
+            OpenModel();
+            CloseTekla();
+            return;
             Process myProcess = Process.Start("Notepad.exe");
             Console.WriteLine("Sleeping 5s");
             Thread.Sleep(5000);
