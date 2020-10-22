@@ -16,6 +16,8 @@ Tekla Structures API POC (proof of concept) projects.
     * https://teklastructures.support.tekla.com/2020/en/xs_default_environment
 * API
     * `ModelHandler.CreateNewSingleUserModel` Method: https://developer.tekla.com/api/10/guid/4a87383d-506b-847e-0259-27e1e9b1dfb0
+* Build
+    * https://github.com/microsoft/vswhere
 
 
 `c:\Users\vagrant\Documents\tekla_custom_settings.ini`:
@@ -28,4 +30,6 @@ set XS_DEFAULT_ENVIRONMENT=%XSDATADIR%\Environments\blank_project\env_blank_proj
 ```batch
 ::  /create:"C:\TeklaStructuresModels\empty_model"
 "C:\Program Files\Tekla Structures\2020.0\nt\bin\TeklaStructures.exe" -I c:\Users\vagrant\Documents\tekla_custom_settings.ini
+
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" console-test-1\console-test-1.sln /target:console-test-1 /p:Configuration=Release
 ```
