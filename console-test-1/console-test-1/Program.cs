@@ -22,6 +22,12 @@ namespace console_test_1
             public bool Verbose { get; set; }
         }
 
+        static bool test_me()
+        {
+            Model tempModel = new Model();
+            return tempModel.GetConnectionStatus();
+        }
+
         static void StartTekla()
         {
             Process[] localAll = Process.GetProcesses();
@@ -35,7 +41,7 @@ namespace console_test_1
             }
 
             Console.WriteLine("Waiting for Tekla Structures API to become available");
-            teklaModel = new Model();
+
             bool connected = false;
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -45,18 +51,28 @@ namespace console_test_1
                 {
                     //bool wtf = teklaModel.GetConnectionStatus();
                     //teklaModel.GetInfo();
-                    connected = teklaModel.GetConnectionStatus();
+                    connected = test_me();
+                    //if (!connected)
+                    //{
+                    //    Console.WriteLine("dummy1");
+                    //    teklaModel = null;
+                    //    System.GC.Collect();
+                    //    System.GC.WaitForPendingFinalizers();
+                    //    teklaModel = new Model();
+                    //}
                 }
                 catch
                 {
                     Console.WriteLine("dummy");
-//                    teklaModel = null;
+                    teklaModel = null;
+                    System.GC.Collect();
                 }
                 if (sw.ElapsedMilliseconds > 120000) throw new TimeoutException();
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(5000);
             }
 
             teklaModelHandler = new ModelHandler();
+            teklaModel = new Model();
         }
 
         static void OpenModel()
