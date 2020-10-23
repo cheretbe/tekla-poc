@@ -1,4 +1,3 @@
-ansible_version = `ansible --version`
 
 tekla_distr = "/mnt/data/temp/tekla/"
 if File.file?("local-config.yml")
@@ -10,25 +9,56 @@ end
 
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "cheretbe/win10ltsc2019_ru_64"
-  config.winrm.username = "vagrant"
-  config.winrm.password = "#{ENV['AO_DEFAULT_VAGRANT_PASSWORD']}"
-  config.vm.boot_timeout = 900
-  config.vm.synced_folder tekla_distr, "/tekla_distr"
-  config.vm.synced_folder "..", "/tekla-poc"
+  config.vm.define "win10" do |win10|
+    win10.vm.box = "cheretbe/win10ltsc2019_ru_64"
+    win10.winrm.username = "vagrant"
+    win10.winrm.password = "#{ENV['AO_DEFAULT_VAGRANT_PASSWORD']}"
+    win10.vm.boot_timeout = 900
+    win10.vm.synced_folder tekla_distr, "/tekla_distr"
+    win10.vm.synced_folder "..", "/tekla-poc"
 
-  config.vm.provider "virtualbox" do |vb|
-    vb.memory = "8192"
-    vb.cpus = "2"
-    vb.customize ["modifyvm", :id, "--groups", "/__vagrant"]
-    vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    win10.vm.provider "virtualbox" do |vb|
+      vb.memory = "8192"
+      vb.cpus = "2"
+      vb.customize ["modifyvm", :id, "--groups", "/__vagrant"]
+      vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    end
+
+    win10.vm.network "private_network", ip: "172.24.0.11", virtualbox__intnet: "vagrant-intnet"
+
+    win10.vm.provision "shell",
+      keep_color: true,
+      inline: <<-SHELL
+        if ($NULL -eq (Get-NetFirewallRule -DisplayName "_ansible_provision" -ErrorAction SilentlyContinue)) {
+          Write-Host "Adding firewall rule (allow access from 172.24.0.0/24)"
+          New-NetFirewallRule -DisplayName "_ansible_provision" -RemoteAddress "172.24.0.0/24" | Out-Null
+        }
+      SHELL
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provision.yml"
-    ansible.compatibility_mode = "2.0"
-    ansible.extra_vars = {
-      "ansible_winrm_scheme": "http"
-    }
+  config.vm.define :"ansible-controller" do |ansible_controller|
+    ansible_controller.vm.box = "ubuntu/focal64"
+    ansible_controller.vm.hostname = "ansible-controller"
+    ansible_controller.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--groups", "/__vagrant"]
+      vb.customize ["modifyvm", :id, "--uartmode1", "disconnected"]
+    end
+    ansible_controller.vm.network "private_network", ip: "172.24.0.10", virtualbox__intnet: "vagrant-intnet"
+    ansible_controller.vm.provision "shell",
+      keep_color: true,
+      inline: <<-SHELL
+        set -euo pipefail
+
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        #apt-get -yq install software-properties-common python3
+        #apt-add-repository --yes --update ppa:ansible/ansible
+        apt-get -yq install ansible
+
+        ansible-playbook -i 172.24.0.11, -u vagrant \
+          --extra-vars "ansible_password=#{ENV['AO_DEFAULT_VAGRANT_PASSWORD']}" \
+          --extra-vars " ansible_connection=winrm ansible_port=5985 ansible_winrm_transport=ntlm" \
+          /vagrant/provision.yml
+      SHELL
   end
 end
