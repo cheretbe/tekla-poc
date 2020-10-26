@@ -1,3 +1,6 @@
+if not ENV.has_key?("AO_DEFAULT_VAGRANT_PASSWORD") then
+  abort "ERROR: AO_DEFAULT_VAGRANT_PASSWORD environment variable is not defined"
+end
 
 tekla_distr = "/mnt/data/temp/tekla/"
 mem_size = "8192"
