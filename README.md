@@ -18,6 +18,9 @@ Tekla Structures API POC (proof of concept) projects.
     * `ModelHandler.CreateNewSingleUserModel` Method: https://developer.tekla.com/api/10/guid/4a87383d-506b-847e-0259-27e1e9b1dfb0
 * Build
     * https://github.com/microsoft/vswhere
+* VS settings
+    * https://visualstudioextensions.vlasovstudio.com/2017/06/29/changing-visual-studio-2017-private-registry-settings/
+    * https://github.com/dotnet/project-system/blob/master/docs/repo/content/DesignTimeBuildOutputPane.cmd
 
 
 `c:\Users\vagrant\Documents\tekla_custom_settings.ini`:
