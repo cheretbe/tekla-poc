@@ -51,6 +51,12 @@
         src: templates/tekla_custom_settings.ini
         dest: "C:\\Users\\vagrant\\Documents\\tekla_custom_settings.ini"
 
+    - name: Extract empty model structure
+      win_unzip:
+        src: c:\vagrant\templates\empty_model.zip
+        dest: c:\TeklaStructuresModels
+        creates: c:\TeklaStructuresModels\empty_model
+
     - name: Install Git
       win_chocolatey:
         name:
