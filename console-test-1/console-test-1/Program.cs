@@ -22,10 +22,20 @@ namespace console_test_1
             public bool Verbose { get; set; }
         }
 
-        static bool test_me()
+        static bool IsAPIReady()
         {
-            Model tempModel = new Model();
-            return tempModel.GetConnectionStatus();
+            //Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
+            String helperUtil = System.IO.Path.GetFullPath(
+                System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\tekla-api-ready\bin\Release\tekla-api-ready.exe")
+            );
+            //Console.WriteLine(helperUtil);
+            //Process helperProcess = Process.Start(helperUtil);
+            Process helperProcess = new Process();
+            helperProcess.StartInfo.FileName = helperUtil;
+            helperProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            helperProcess.Start();
+            helperProcess.WaitForExit();
+            return (helperProcess.ExitCode == 0);
         }
 
         static void StartTekla()
@@ -34,39 +44,18 @@ namespace console_test_1
             if (Process.GetProcessesByName("TeklaStructures").Length == 0)
             {
                 Console.WriteLine("Starting Tekla Structures");
-                //teklaProc = Process.Start(
-                //    "C:\\Program Files\\Tekla Structures\\2020.0\\nt\\bin\\TeklaStructures.exe",
-                //    "-I c:\\Users\\vagrant\\Documents\\tekla_custom_settings.ini c:\\TeklaStructuresModels\\empty_model"
-                //);
+                teklaProc = Process.Start(
+                    @"C:\Program Files\Tekla Structures\2020.0\nt\bin\TeklaStructures.exe",
+                    @"-I c:\Users\vagrant\Documents\tekla_custom_settings.ini c:\TeklaStructuresModels\empty_model"
+                );
             }
 
             Console.WriteLine("Waiting for Tekla Structures API to become available");
 
-            bool connected = false;
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            while (!connected)
+            while (!IsAPIReady())
             {
-                try
-                {
-                    //bool wtf = teklaModel.GetConnectionStatus();
-                    //teklaModel.GetInfo();
-                    connected = test_me();
-                    //if (!connected)
-                    //{
-                    //    Console.WriteLine("dummy1");
-                    //    teklaModel = null;
-                    //    System.GC.Collect();
-                    //    System.GC.WaitForPendingFinalizers();
-                    //    teklaModel = new Model();
-                    //}
-                }
-                catch
-                {
-                    Console.WriteLine("dummy");
-                    teklaModel = null;
-                    System.GC.Collect();
-                }
                 if (sw.ElapsedMilliseconds > 120000) throw new TimeoutException();
                 System.Threading.Thread.Sleep(5000);
             }
@@ -93,6 +82,10 @@ namespace console_test_1
         {
             if (teklaProc != null)
             {
+                // Prevent save dialog from popping up
+                Console.WriteLine("Closing current model");
+                teklaModelHandler.Close();
+
                 teklaProc.Refresh();
                 if (!teklaProc.HasExited)
                 {
@@ -120,22 +113,6 @@ namespace console_test_1
             StartTekla();
             OpenModel();
             CloseTekla();
-            return;
-            Process myProcess = Process.Start("Notepad.exe");
-            Console.WriteLine("Sleeping 5s");
-            Thread.Sleep(5000);
-            // Discard cached information about the process.
-            myProcess.Refresh();
-            if (!myProcess.HasExited)
-            {
-                Console.WriteLine("Closing");
-                // Close process by sending a close message to its main window.
-                myProcess.CloseMainWindow();
-                // Free resources associated with process.
-                myProcess.Close();
-            }
-            myProcess.Dispose();
-            Console.WriteLine("Done");
         }
     }
 }

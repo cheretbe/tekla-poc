@@ -11,22 +11,26 @@ namespace tekla_api_ready
     {
         static int Main(string[] args)
         {
-            
-            //return 0;
+            int returnValue = 1;
 
             Model teklaModel = new Model();
-            //if (teklaModel.GetConnectionStatus())
-            if (true)
+            if (teklaModel.GetConnectionStatus())
+            //if (true)
             {
-                ModelHandler teklaModelHandler = new ModelHandler();
-                teklaModelHandler.Open("c:\\TeklaStructuresModels\\Новая модель");
-                ModelInfo info = teklaModel.GetInfo();
-                Console.WriteLine($"ModelName: {info.ModelName}");
-                Console.WriteLine($"ModelPath: {info.ModelPath}");
-                return 0;
-            }
-            else
-                return 1;
+                //Console.WriteLine("Connected");
+                //ModelHandler teklaModelHandler = new ModelHandler();
+                //teklaModelHandler.Open("c:\\TeklaStructuresModels\\Новая модель");
+                //ModelInfo info = teklaModel.GetInfo();
+                //Console.WriteLine($"ModelName: {info.ModelName}");
+                //Console.WriteLine($"ModelPath: {info.ModelPath}");
+                //return 0;
+                if (!String.IsNullOrEmpty(teklaModel.GetInfo().ModelPath))
+                    returnValue = 0;
+            } //if
+            #if DEBUG
+                Console.WriteLine($"returnValue: {returnValue}");
+            #endif
+            return returnValue;
         }
     }
 }
