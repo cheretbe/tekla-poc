@@ -92,6 +92,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\tekla-api-ready\tekla-api-ready.csproj">
+      <Project>{7e82f525-f0c5-4017-b151-3ac9d6662c20}</Project>
+      <Name>tekla-api-ready</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

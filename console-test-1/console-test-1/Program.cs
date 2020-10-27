@@ -26,7 +26,7 @@ namespace console_test_1
         {
             //Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
             String helperUtil = System.IO.Path.GetFullPath(
-                System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\tekla-api-ready\bin\Release\tekla-api-ready.exe")
+                System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tekla-api-ready.exe")
             );
             //Console.WriteLine(helperUtil);
             //Process helperProcess = Process.Start(helperUtil);
