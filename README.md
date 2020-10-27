@@ -1,6 +1,6 @@
 Tekla Structures API POC (proof of concept) projects.
 
-
+* **https://github.com/dawiddyrcz/Awesome-tekla-open-api**
 * https://developer.tekla.com/tekla-structures/api/10
 * https://www.techpowerup.com/download/visual-c-redistributable-runtime-package-all-in-one/
 * http://razorcx.com/
