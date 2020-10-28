@@ -6,7 +6,8 @@ Tekla Structures API POC (proof of concept) projects.
 * http://razorcx.com/
     * https://github.com/razorcx
     * https://www.youtube.com/c/RazorCXTechnologies/videos
-* https://www.youtube.com/user/40ushek/videos
+* https://mainpart.eu/#/app-dev
+    * https://www.youtube.com/user/40ushek/videos
     * https://www.youtube.com/watch?v=S-d0TBqMqVM Tekla Open API Tutorial. Creating macro fitting a beam by face
 * WPF
     * https://developer.tekla.com/tekla-structures/documentation/tekla-open-api-ui-design-wpf
