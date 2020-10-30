@@ -26,6 +26,7 @@ Tekla Structures API POC (proof of concept) projects.
     * https://github.com/dotnet/project-system/blob/master/docs/repo/content/DesignTimeBuildOutputPane.cmd
 * Warehouse
     * RC Model Colors by Profile https://warehouse.tekla.com/#!/catalog/details/ede77c52-be51-44b2-9381-c39811d7fd9d
+    * TeklaPad https://warehouse.tekla.com/#!/catalog/details/ad0856df-072d-4944-aaeb-b74fd540b348
 
 
 `c:\Users\vagrant\Documents\tekla_custom_settings.ini`:
