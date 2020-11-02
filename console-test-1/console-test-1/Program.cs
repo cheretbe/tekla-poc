@@ -40,7 +40,6 @@ namespace console_test_1
 
         static void StartTekla()
         {
-            Process[] localAll = Process.GetProcesses();
             if (Process.GetProcessesByName("TeklaStructures").Length == 0)
             {
                 Console.WriteLine("Starting Tekla Structures");
@@ -98,6 +97,14 @@ namespace console_test_1
             }
         }
 
+        static void CreateObjects()
+        {
+            Console.WriteLine("Adding beam object");
+            if (!TeklaObjectsOperations.TestOperations.CreateBeam())
+                throw new Exception("Something went wrong");
+            Console.WriteLine("OK");
+        }
+
         static void Main(string[] args)
         {
             Options options = null;
@@ -112,6 +119,7 @@ namespace console_test_1
 
             StartTekla();
             OpenModel();
+            CreateObjects();
             CloseTekla();
         }
     }

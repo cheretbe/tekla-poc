@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console-test-1", "console-t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tekla-api-ready", "tekla-api-ready\tekla-api-ready.csproj", "{7E82F525-F0C5-4017-B151-3AC9D6662C20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{4163370B-8D21-43BC-9552-72DA9B3AE133}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7E82F525-F0C5-4017-B151-3AC9D6662C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E82F525-F0C5-4017-B151-3AC9D6662C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E82F525-F0C5-4017-B151-3AC9D6662C20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4163370B-8D21-43BC-9552-72DA9B3AE133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4163370B-8D21-43BC-9552-72DA9B3AE133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4163370B-8D21-43BC-9552-72DA9B3AE133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4163370B-8D21-43BC-9552-72DA9B3AE133}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
