@@ -20,4 +20,32 @@ namespace TeklaObjectsOperations
             return creationResult;
         }
     }
+
+    public interface ITSModelWrapper
+    {
+        //TSM.Model myModel { get; }
+        bool GetConnectionStatus();
+    }
+
+    public class TSModelWrapper: ITSModelWrapper
+    {
+        private readonly TSM.Model myModel;
+        public TSModelWrapper()
+        {
+            this.myModel = new TSM.Model();
+        }
+        public bool GetConnectionStatus()
+        {
+            return this.myModel.GetConnectionStatus();
+        }
+    }
+
+    public class MockTest
+    {
+        public bool DoTest(ITSModelWrapper myModel)
+        {
+            //TSM.Model myModel = new TSM.Model();
+            return myModel.GetConnectionStatus();
+        }
+    }
 }

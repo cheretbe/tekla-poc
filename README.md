@@ -41,4 +41,8 @@ set XS_DEFAULT_ENVIRONMENT=%XSDATADIR%\Environments\blank_project\env_blank_proj
 "C:\Program Files\Tekla Structures\2020.0\nt\bin\TeklaStructures.exe" -I c:\Users\vagrant\Documents\tekla_custom_settings.ini
 
 "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" console-test-1\console-test-1.sln /target:console-test-1 /p:Configuration=Release
+
+:: Unit tests
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" console-test-1\console-test-1.sln /target:UnitTestProject1 /p:Configuration=Release
+"c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" console-test-1\UnitTestProject1\bin\Release\UnitTestProject1.dll
 ```
