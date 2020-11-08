@@ -9,6 +9,7 @@ Tekla Structures API POC (proof of concept) projects.
 * https://mainpart.eu/#/app-dev
     * https://www.youtube.com/user/40ushek/videos
     * https://www.youtube.com/watch?v=S-d0TBqMqVM Tekla Open API Tutorial. Creating macro fitting a beam by face
+* https://topengineer.ru/programms/sreda-kmd-rus
 * WPF
     * https://developer.tekla.com/tekla-structures/documentation/tekla-open-api-ui-design-wpf
     * WinForm vs WPF vs UWP vs Console - The C# Desktop UI Showdown (and the future with .NET 5) https://www.youtube.com/watch?v=yq0dSkA1vpM
